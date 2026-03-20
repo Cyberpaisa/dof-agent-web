@@ -111,8 +111,10 @@
         .wc-d { font-size: 14px; color: rgba(255,255,255,0.35); line-height: 1.7; }
 
         /* ═══════════════════ TRACKS ═══════════════════ */
-        .tg { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: rgba(255,255,255,0.06); border-radius: 24px; overflow: hidden; }
-        .tc { padding: 40px 36px; background: var(--bg); text-decoration: none; color: white; display: flex; flex-direction: column; transition: all 0.4s; position: relative; overflow: hidden; }
+        .tg { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: transparent; border-radius: 24px; overflow: hidden; }
+        .tc { border: 1px solid rgba(255,255,255,0.06); }
+        .tg .tc:last-child { grid-column: 2; }
+        .tc { padding: 40px 36px; background: rgba(255,255,255,0.02); text-decoration: none; color: white; display: flex; flex-direction: column; transition: all 0.4s; position: relative; overflow: hidden; border-radius: 16px; }
         .tc::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--violet), transparent); opacity: 0; transition: opacity 0.4s; }
         .tc:hover { background: rgba(139,92,246,0.03); }
         .tc:hover::before { opacity: 0.5; }
