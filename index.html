@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DOF Agent #1686 — Deterministic Observability Framework</title>
+    <title>DOF — Deterministic Observability Framework</title>
     <meta name="description" content="Math-verified, blockchain-attested autonomous AI agent governance. Zero trust required — only math and blockchain.">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,500&display=swap" rel="stylesheet">
     <style>
@@ -39,8 +39,7 @@
         nav { position: fixed; top: 0; width: 100%; z-index: 100; padding: 16px 48px; display: flex; justify-content: space-between; align-items: center; backdrop-filter: blur(20px) saturate(1.4); background: rgba(5,5,16,0.6); border-bottom: 1px solid rgba(255,255,255,0.04); transition: all 0.3s; }
         nav.scrolled { padding: 10px 48px; background: rgba(5,5,16,0.85); }
         .logo { font-size: 18px; font-weight: 900; letter-spacing: -0.5px; display: flex; align-items: center; gap: 10px; }
-        .logo-icon { width: 28px; height: 28px; border-radius: 8px; background: linear-gradient(135deg, var(--purple), var(--indigo)); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 900; }
-        .logo span { font-weight: 400; color: rgba(255,255,255,0.3); font-size: 14px; }
+        .logo svg { flex-shrink: 0; }
         .nav-r { display: flex; align-items: center; gap: 28px; }
         .nav-links { display: flex; gap: 28px; }
         .nav-links a { color: rgba(255,255,255,0.4); text-decoration: none; font-size: 13px; font-weight: 500; transition: color 0.2s; position: relative; }
@@ -217,8 +216,27 @@
 <!-- NAV -->
 <nav id="nav">
     <div class="logo">
-        <div class="logo-icon">D</div>
-        DOF <span>#1686</span>
+        <svg width="32" height="32" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <linearGradient id="lg1" x1="0" y1="0" x2="120" y2="120" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stop-color="#a78bfa"/>
+                    <stop offset="50%" stop-color="#8b5cf6"/>
+                    <stop offset="100%" stop-color="#6366f1"/>
+                </linearGradient>
+                <linearGradient id="lg2" x1="30" y1="30" x2="90" y2="90" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stop-color="#c4b5fd"/>
+                    <stop offset="100%" stop-color="#818cf8"/>
+                </linearGradient>
+            </defs>
+            <rect width="120" height="120" rx="28" fill="url(#lg1)"/>
+            <rect x="4" y="4" width="112" height="112" rx="24" fill="#0a0a1a" fill-opacity="0.85"/>
+            <path d="M38 32h20c18 0 30 8 36 20 4 8 4 18 0 26-6 12-18 20-36 20H38V32z" fill="none" stroke="url(#lg2)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="68" cy="60" r="8" fill="url(#lg2)" opacity="0.9"/>
+            <line x1="68" y1="60" x2="92" y2="60" stroke="url(#lg2)" stroke-width="3" stroke-linecap="round" opacity="0.5"/>
+            <line x1="68" y1="60" x2="82" y2="44" stroke="url(#lg2)" stroke-width="2.5" stroke-linecap="round" opacity="0.35"/>
+            <line x1="68" y1="60" x2="82" y2="76" stroke="url(#lg2)" stroke-width="2.5" stroke-linecap="round" opacity="0.35"/>
+        </svg>
+        DOF
     </div>
     <div class="nav-r">
         <div class="nav-links">
@@ -244,7 +262,7 @@
     <div class="hero-c">
         <div class="h-badge">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
-            ERC-8004 Certified &middot; DOF Agent #1686
+            ERC-8004 Certified &middot; Deterministic Observability Framework
         </div>
         <h1>
             <span class="word" style="animation-delay:0s">The</span>
@@ -505,10 +523,10 @@
             <div class="terminal-dot td-r"></div>
             <div class="terminal-dot td-y"></div>
             <div class="terminal-dot td-g"></div>
-            <span class="terminal-title">DOF Agent #1686 — Live Feed</span>
+            <span class="terminal-title">DOF — Live Feed</span>
         </div>
         <div class="terminal-body" id="terminal">
-            <div><span class="prompt">$</span> Initializing DOF Agent #1686...</div>
+            <div><span class="prompt">$</span> Initializing DOF Agent...</div>
             <div><span class="info">[GOVERNANCE]</span> Constitution loaded — 42 deterministic rules active</div>
             <div><span class="info">[Z3]</span> Verifying GCR_INVARIANT... <span class="success">PROVEN (12ms)</span></div>
             <div><span class="info">[Z3]</span> Verifying SS_FORMULA... <span class="success">PROVEN (8ms)</span></div>
@@ -532,7 +550,7 @@
 
 <!-- ═══════════════════ FOOTER ═══════════════════ -->
 <footer>
-    <div class="fb">DOF Agent #1686 &mdash; Synthesis Hackathon 2026</div>
+    <div class="fb">DOF &mdash; Synthesis Hackathon 2026</div>
     <p>Deterministic Observability Framework</p>
     <p>Apache 2.0 &middot; ERC-8004 &middot; Avalanche &middot; Base</p>
     <p style="margin-top:20px;font-size:13px;color:rgba(255,255,255,0.5);font-weight:600;letter-spacing:0.5px;">by <span style="color:rgba(255,255,255,0.8);">Cyber Paisa</span></p>
