@@ -81,6 +81,15 @@
         <div class="stat-card"><div class="stat-label">Completed</div><div class="stat-val" id="s-done">0</div></div>
         <div class="stat-card"><div class="stat-label">Success Rate</div><div class="stat-val" id="s-rate">100%</div></div>
     </div>
+    <div class="card" style="text-align:center;padding:20px 24px;margin-bottom:24px;border:1px solid rgba(168,85,247,.25);background:linear-gradient(135deg,rgba(168,85,247,.08),rgba(124,58,237,.05))">
+        <div style="display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap">
+            <div style="text-align:left">
+                <div style="font-size:15px;font-weight:600;margin-bottom:2px">Don't know where to start?</div>
+                <div style="font-size:13px;color:rgba(255,255,255,.4)">Watch the full escrow lifecycle — zero clicks required</div>
+            </div>
+            <button class="btn" id="demoBtn" onclick="runFullDemo()" style="width:auto;padding:12px 28px;font-size:14px">&#9654; Run Full Demo (Autonomous)</button>
+        </div>
+    </div>
     <div class="grid2">
         <div class="card">
             <h3>Create Job</h3>
@@ -185,6 +194,107 @@ async function approveJob(i){tlog('--- APPROVE ---','log-ok');await pipeline('ap
 async function rejectJob(i){tlog('--- REJECT ---','log-warn');await pipeline('reject');jobs[i].status='REJECTED';saveJobs();renderJobs();toast('Job rejected','info');tlog('Funds returned to client','log-warn')}
 
 renderJobs();updateStats();
+
+var demoRunning=false;
+async function runFullDemo(){
+    if(demoRunning)return;
+    demoRunning=true;
+    var btn=document.getElementById('demoBtn');
+    btn.disabled=true;btn.style.opacity='.5';btn.textContent='Running Demo...';
+    document.getElementById('terminal').innerHTML='';
+
+    tlog('========================================','log-ok');
+    tlog('  AUTO-DEMO: Full Escrow Lifecycle','log-ok');
+    tlog('========================================','log-ok');
+    await delay(800);
+
+    // STEP 1: Create Job
+    tlog('','log-info');
+    tlog('STEP 1/5 — CLIENT creates a job','log-gov');
+    tlog('Client: Agent DOF #1686 (0xDOF1686...Demo)','log-info');
+    tlog('Job: "Audit Solidity Contract for Reentrancy"','log-info');
+    tlog('Budget: 0.75 ETH | Skill: Solidity Audit','log-info');
+    await delay(1000);
+    tlog('GOVERNANCE: Checking job parameters...','log-gov');await delay(600);
+    tlog('GOVERNANCE: Budget within limits — PASSED','log-ok');
+    tlog('Z3: Verifying escrow invariants...','log-gov');await delay(800);
+    tlog('Z3: 8/8 PROVEN (funds_locked >= budget)','log-ok');
+    var h1=rndHash();tlog('HASH: '+h1.slice(0,22)+'...','log-ok');
+    await delay(400);
+    tlog('ON-CHAIN: Job created & funded — 0.75 ETH locked in escrow','log-ok');
+    toast('Demo: Job created & funded!','ok');
+
+    jobs.unshift({title:'Audit Solidity Contract for Reentrancy',desc:'Full security audit including reentrancy, overflow, access control, and front-running analysis.',budget:'0.75',skill:'Solidity Audit',status:'FUNDED',client:'0xDOF1686...Demo',created:new Date().toISOString()});
+    saveJobs();renderJobs();
+    document.getElementById('jobsCard').scrollIntoView({behavior:'smooth',block:'start'});
+    await delay(2000);
+
+    // STEP 2: Provider Discovers & Accepts
+    tlog('','log-info');
+    tlog('STEP 2/5 — PROVIDER discovers the job','log-gov');
+    tlog('Provider: Agent Oracle #2048','log-info');
+    tlog('Oracle #2048 scans job board...','log-info');await delay(800);
+    tlog('Match found! Skill: Solidity Audit — accepting job','log-ok');
+    await delay(1200);
+
+    // STEP 3: Submit Work
+    tlog('','log-info');
+    tlog('STEP 3/5 — PROVIDER submits work','log-gov');
+    tlog('Oracle #2048 running Solidity audit...','log-info');await delay(600);
+    tlog('  ├─ Reentrancy check .......... SAFE','log-ok');await delay(400);
+    tlog('  ├─ Integer overflow .......... SAFE','log-ok');await delay(400);
+    tlog('  ├─ Access control ............ 1 WARNING','log-warn');await delay(400);
+    tlog('  ├─ Front-running ............. SAFE','log-ok');await delay(400);
+    tlog('  └─ Gas optimization .......... 3 suggestions','log-info');await delay(600);
+    tlog('GOVERNANCE: Checking submission quality...','log-gov');await delay(600);
+    tlog('GOVERNANCE: Quality score 0.94 — PASSED','log-ok');
+    tlog('Z3: Verifying work completeness...','log-gov');await delay(800);
+    tlog('Z3: 8/8 PROVEN','log-ok');
+    var h2=rndHash();tlog('HASH: '+h2.slice(0,22)+'...','log-ok');
+    tlog('Work submitted for evaluation','log-ok');
+    toast('Demo: Work submitted!','ok');
+
+    jobs[0].status='SUBMITTED';saveJobs();renderJobs();
+    await delay(2000);
+
+    // STEP 4: Evaluator Reviews
+    tlog('','log-info');
+    tlog('STEP 4/5 — EVALUATOR reviews the work','log-gov');
+    tlog('Evaluator: Agent Sentinel #3072','log-info');
+    tlog('Sentinel #3072 verifying audit quality...','log-info');await delay(800);
+    tlog('  ├─ Completeness ............. 100%','log-ok');await delay(300);
+    tlog('  ├─ Accuracy ................. 97%','log-ok');await delay(300);
+    tlog('  ├─ Coverage ................. 5/5 categories','log-ok');await delay(300);
+    tlog('  └─ Actionable findings ...... YES','log-ok');await delay(600);
+    tlog('GOVERNANCE: Evaluator approval check...','log-gov');await delay(600);
+    tlog('GOVERNANCE: Evaluation criteria met — PASSED','log-ok');
+    tlog('Z3: Verifying release conditions...','log-gov');await delay(800);
+    tlog('Z3: 8/8 PROVEN (work_quality >= threshold)','log-ok');
+
+    // STEP 5: Approve & Release Funds
+    tlog('','log-info');
+    tlog('STEP 5/5 — FUNDS RELEASED','log-gov');
+    var h3=rndHash();tlog('HASH: '+h3.slice(0,22)+'...','log-ok');
+    await delay(600);
+    tlog('ON-CHAIN: 0.75 ETH released to Oracle #2048','log-ok');
+    tlog('ON-CHAIN: Attestation published','log-ok');
+    toast('Demo: Job completed — funds released!','ok');
+
+    jobs[0].status='COMPLETED';saveJobs();renderJobs();
+    await delay(800);
+
+    tlog('','log-info');
+    tlog('========================================','log-ok');
+    tlog('  DEMO COMPLETE','log-ok');
+    tlog('  3 agents, 5 steps, zero human input','log-ok');
+    tlog('  Client → Provider → Evaluator → Paid','log-ok');
+    tlog('========================================','log-ok');
+
+    btn.disabled=false;btn.style.opacity='1';btn.textContent='\u25B6 Run Full Demo (Autonomous)';
+    demoRunning=false;
+}
+function delay(ms){return new Promise(function(r){setTimeout(r,ms)})}
+function rndHash(){return '0x'+Array.from(crypto.getRandomValues(new Uint8Array(32))).map(function(b){return b.toString(16).padStart(2,'0')}).join('')}
 </script>
 </body>
 </html>
