@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DOF Agent #1686 — Deterministic Observability Framework</title>
+    <meta name="description" content="Math-verified, blockchain-attested autonomous AI agent governance. Zero trust required — only math and blockchain.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #050510;
+            --purple: #8b5cf6;
+            --indigo: #6366f1;
+            --violet: #a78bfa;
+            --cyan: #22d3ee;
+            --emerald: #34d399;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Inter', -apple-system, sans-serif; background: var(--bg); color: white; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+
+        /* ═══════════════════ CANVAS PARTICLES ═══════════════════ */
+        #particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+
+        /* ═══════════════════ AURORA GRADIENT ═══════════════════ */
+        .aurora { position: fixed; top: -50%; left: -50%; width: 200%; height: 200%; z-index: 0; pointer-events: none; opacity: 0.4; }
+        .aurora-blob { position: absolute; border-radius: 50%; filter: blur(120px); animation: auroraFloat 20s ease-in-out infinite; }
+        .ab1 { width: 600px; height: 600px; background: rgba(99,102,241,0.15); top: 10%; left: 20%; }
+        .ab2 { width: 500px; height: 500px; background: rgba(139,92,246,0.12); top: 50%; left: 60%; animation-delay: -7s; animation-duration: 25s; }
+        .ab3 { width: 400px; height: 400px; background: rgba(34,211,238,0.08); top: 30%; left: 40%; animation-delay: -14s; animation-duration: 30s; }
+        @keyframes auroraFloat {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(80px, -60px) scale(1.1); }
+            50% { transform: translate(-40px, 40px) scale(0.95); }
+            75% { transform: translate(60px, 20px) scale(1.05); }
+        }
+
+        /* ═══════════════════ NAV ═══════════════════ */
+        nav { position: fixed; top: 0; width: 100%; z-index: 100; padding: 16px 48px; display: flex; justify-content: space-between; align-items: center; backdrop-filter: blur(20px) saturate(1.4); background: rgba(5,5,16,0.6); border-bottom: 1px solid rgba(255,255,255,0.04); transition: all 0.3s; }
+        nav.scrolled { padding: 10px 48px; background: rgba(5,5,16,0.85); }
+        .logo { font-size: 18px; font-weight: 900; letter-spacing: -0.5px; display: flex; align-items: center; gap: 10px; }
+        .logo-icon { width: 28px; height: 28px; border-radius: 8px; background: linear-gradient(135deg, var(--purple), var(--indigo)); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 900; }
+        .logo span { font-weight: 400; color: rgba(255,255,255,0.3); font-size: 14px; }
+        .nav-r { display: flex; align-items: center; gap: 28px; }
+        .nav-links { display: flex; gap: 28px; }
+        .nav-links a { color: rgba(255,255,255,0.4); text-decoration: none; font-size: 13px; font-weight: 500; transition: color 0.2s; position: relative; }
+        .nav-links a:hover { color: white; }
+        .nav-links a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 1px; background: var(--violet); transition: width 0.3s; }
+        .nav-links a:hover::after { width: 100%; }
+        .chip { display: inline-flex; align-items: center; gap: 8px; border: 1px solid rgba(255,255,255,0.08); border-radius: 999px; padding: 7px 16px; font-size: 12px; font-weight: 500; color: rgba(255,255,255,0.6); background: rgba(255,255,255,0.03); }
+        .chip .dot { width: 6px; height: 6px; background: #22c55e; border-radius: 50%; box-shadow: 0 0 8px #22c55e; animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+        /* ═══════════════════ HERO ═══════════════════ */
+        .hero { position: relative; min-height: 100vh; display: flex; align-items: center; padding: 0 48px; overflow: hidden; }
+        .hero-vid { position: absolute; top: 0; right: 0; width: 55%; height: 100%; z-index: 0; mask-image: linear-gradient(to left, rgba(0,0,0,0.5) 0%, transparent 85%); -webkit-mask-image: linear-gradient(to left, rgba(0,0,0,0.5) 0%, transparent 85%); }
+        .hero-vid video { width: 100%; height: 100%; object-fit: cover; }
+        .hero-c { position: relative; z-index: 20; max-width: 680px; }
+        .h-badge { display: inline-flex; align-items: center; gap: 8px; border: 1px solid rgba(139,92,246,0.25); border-radius: 999px; padding: 8px 20px; font-size: 13px; font-weight: 500; color: var(--violet); backdrop-filter: blur(8px); margin-bottom: 36px; background: rgba(139,92,246,0.06); opacity: 0; animation: slideUp 0.6s 0.1s ease-out forwards; }
+        .hero h1 { font-size: clamp(2.8rem, 5.5vw, 4.2rem); font-weight: 800; line-height: 1.1; letter-spacing: -2.5px; margin-bottom: 28px; }
+        .hero h1 em { font-family: 'Playfair Display', serif; font-style: italic; font-weight: 400; background: linear-gradient(135deg, #c4b5fd, #818cf8, #22d3ee); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero .hsub { font-size: 17px; color: rgba(255,255,255,0.5); line-height: 1.8; max-width: 500px; margin-bottom: 40px; opacity: 0; animation: slideUp 0.6s 0.4s ease-out forwards; }
+        .hero-btns { display: flex; gap: 14px; flex-wrap: wrap; opacity: 0; animation: slideUp 0.6s 0.6s ease-out forwards; }
+        .bw { background: white; color: var(--bg); padding: 14px 28px; border-radius: 999px; font-size: 14px; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; transition: all 0.3s; box-shadow: 0 0 30px rgba(255,255,255,0.08); }
+        .bw:hover { transform: translateY(-2px); box-shadow: 0 8px 40px rgba(255,255,255,0.15); }
+        .bo { background: transparent; color: white; padding: 14px 28px; border-radius: 999px; font-size: 14px; font-weight: 500; text-decoration: none; border: 1px solid rgba(255,255,255,0.12); transition: all 0.3s; backdrop-filter: blur(8px); }
+        .bo:hover { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.2); }
+        .word { display: inline-block; opacity: 0; transform: translateY(50px) rotateX(-15deg); animation: wordReveal 0.7s cubic-bezier(0.16,1,0.3,1) forwards; }
+        @keyframes wordReveal { to { opacity: 1; transform: translateY(0) rotateX(0); } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* ═══════════════════ MARQUEE ═══════════════════ */
+        .marquee-wrap { padding: 28px 0; border-top: 1px solid rgba(255,255,255,0.04); border-bottom: 1px solid rgba(255,255,255,0.04); overflow: hidden; position: relative; z-index: 1; }
+        .marquee { display: flex; gap: 48px; animation: marqueeScroll 30s linear infinite; width: max-content; }
+        .marquee-item { display: flex; align-items: center; gap: 10px; font-size: 13px; color: rgba(255,255,255,0.3); font-weight: 600; white-space: nowrap; letter-spacing: 1px; text-transform: uppercase; }
+        .marquee-item .mi-dot { width: 4px; height: 4px; background: var(--violet); border-radius: 50%; }
+        @keyframes marqueeScroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+        /* ═══════════════════ SECTIONS ═══════════════════ */
+        section { padding: 140px 48px; max-width: 1200px; margin: 0 auto; position: relative; z-index: 1; }
+        .sl { font-size: 11px; font-weight: 700; letter-spacing: 5px; text-transform: uppercase; color: var(--violet); margin-bottom: 16px; }
+        .st { font-size: clamp(1.6rem, 3.2vw, 2.5rem); font-weight: 800; letter-spacing: -1px; line-height: 1.3; margin-bottom: 16px; max-width: 600px; }
+        .st em { font-family: 'Playfair Display', serif; font-style: italic; font-weight: 400; }
+        .sd { font-size: 16px; color: rgba(255,255,255,0.4); max-width: 520px; line-height: 1.75; margin-bottom: 64px; }
+
+        /* ═══════════════════ STATS ═══════════════════ */
+        .sg { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: rgba(255,255,255,0.06); border-radius: 24px; overflow: hidden; box-shadow: 0 0 80px rgba(99,102,241,0.06); }
+        .sc { padding: 52px 36px; text-align: center; background: var(--bg); position: relative; overflow: hidden; transition: all 0.4s; }
+        .sc::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(ellipse at center, rgba(139,92,246,0.04), transparent 70%); opacity: 0; transition: opacity 0.4s; }
+        .sc:hover::before { opacity: 1; }
+        .sv { font-size: 3.2rem; font-weight: 900; letter-spacing: -2px; background: linear-gradient(135deg, #fff 0%, #c4b5fd 50%, #818cf8 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1; }
+        .sla { font-size: 12px; color: rgba(255,255,255,0.3); margin-top: 14px; font-weight: 500; letter-spacing: 0.5px; }
+
+        /* ═══════════════════ PIPELINE ═══════════════════ */
+        .pipeline { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; position: relative; }
+        .pipe-step { text-align: center; padding: 32px 8px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.04); border-radius: 16px; position: relative; transition: all 0.4s; cursor: default; }
+        .pipe-step:hover { border-color: rgba(139,92,246,0.3); background: rgba(139,92,246,0.04); transform: translateY(-4px); box-shadow: 0 12px 40px rgba(139,92,246,0.1); }
+        .pipe-num { font-size: 9px; color: rgba(255,255,255,0.15); letter-spacing: 3px; text-transform: uppercase; font-weight: 700; margin-bottom: 14px; }
+        .pipe-icon { font-size: 24px; margin-bottom: 12px; }
+        .pipe-title { font-size: 13px; font-weight: 700; letter-spacing: -0.2px; margin-bottom: 4px; }
+        .pipe-desc { font-size: 10px; color: rgba(255,255,255,0.25); font-weight: 500; }
+        .pipe-connector { position: absolute; top: 50%; right: -8px; width: 8px; height: 1px; background: rgba(139,92,246,0.2); z-index: 2; }
+        .pipe-step:last-child .pipe-connector { display: none; }
+
+        /* ═══════════════════ WHY DOF ═══════════════════ */
+        .wg { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: rgba(255,255,255,0.06); border-radius: 24px; overflow: hidden; }
+        .wc { padding: 44px 36px; background: var(--bg); transition: all 0.4s; position: relative; overflow: hidden; }
+        .wc::after { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle at center, rgba(139,92,246,0.06), transparent 40%); opacity: 0; transition: opacity 0.4s; pointer-events: none; }
+        .wc:hover::after { opacity: 1; }
+        .wc-icon { width: 48px; height: 48px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 22px; margin-bottom: 24px; background: rgba(139,92,246,0.08); border: 1px solid rgba(139,92,246,0.12); }
+        .wc-t { font-size: 17px; font-weight: 700; margin-bottom: 12px; letter-spacing: -0.3px; }
+        .wc-d { font-size: 14px; color: rgba(255,255,255,0.35); line-height: 1.7; }
+
+        /* ═══════════════════ TRACKS ═══════════════════ */
+        .tg { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: rgba(255,255,255,0.06); border-radius: 24px; overflow: hidden; }
+        .tc { padding: 40px 36px; background: var(--bg); text-decoration: none; color: white; display: flex; flex-direction: column; transition: all 0.4s; position: relative; overflow: hidden; }
+        .tc::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--violet), transparent); opacity: 0; transition: opacity 0.4s; }
+        .tc:hover { background: rgba(139,92,246,0.03); }
+        .tc:hover::before { opacity: 0.5; }
+        .tc-h { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+        .tc-ic { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 17px; flex-shrink: 0; }
+        .tc-partner { font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.5); letter-spacing: 0.5px; }
+        .tc-n { font-size: 20px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 10px; }
+        .tc-d { font-size: 13px; color: rgba(255,255,255,0.35); line-height: 1.7; flex: 1; }
+        .tc-f { display: flex; justify-content: space-between; align-items: center; margin-top: 28px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.04); }
+        .tc-cycle { font-size: 10px; font-family: ui-monospace, monospace; color: rgba(255,255,255,0.2); letter-spacing: 2px; font-weight: 600; }
+        .tc-arrow { width: 28px; height: 28px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: center; font-size: 12px; color: rgba(255,255,255,0.3); transition: all 0.3s; }
+        .tc:hover .tc-arrow { border-color: var(--violet); color: var(--violet); transform: translate(2px, -2px); }
+
+        /* ═══════════════════ EVIDENCE ═══════════════════ */
+        .eg { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: rgba(255,255,255,0.06); border-radius: 24px; overflow: hidden; }
+        .ec { padding: 40px 36px; background: var(--bg); transition: all 0.4s; }
+        .ec:hover { background: rgba(99,102,241,0.03); }
+        .ec h3 { font-size: 10px; font-weight: 700; color: var(--violet); letter-spacing: 3px; text-transform: uppercase; margin-bottom: 20px; }
+        .ec code { font-size: 13px; color: rgba(255,255,255,0.5); word-break: break-all; font-family: ui-monospace, monospace; line-height: 2; }
+        .ec a { color: white; text-decoration: none; font-size: 13px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; margin-top: 20px; transition: all 0.3s; }
+        .ec a:hover { gap: 10px; color: var(--violet); }
+
+        /* ═══════════════════ LIVE TERMINAL ═══════════════════ */
+        .terminal-section { padding: 0 48px 80px; max-width: 1200px; margin: 0 auto; position: relative; z-index: 1; }
+        .terminal-box { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 20px; overflow: hidden; }
+        .terminal-header { padding: 14px 20px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid rgba(255,255,255,0.04); }
+        .terminal-dot { width: 10px; height: 10px; border-radius: 50%; }
+        .td-r { background: #ff5f57; }
+        .td-y { background: #febc2e; }
+        .td-g { background: #28c840; }
+        .terminal-title { font-size: 12px; color: rgba(255,255,255,0.3); margin-left: 12px; font-weight: 500; }
+        .terminal-body { padding: 24px; font-family: ui-monospace, SFMono-Regular, monospace; font-size: 12px; height: 200px; overflow-y: auto; color: rgba(255,255,255,0.5); line-height: 2; }
+        .terminal-body .prompt { color: var(--emerald); }
+        .terminal-body .info { color: var(--violet); }
+        .terminal-body .success { color: #22c55e; }
+
+        /* ═══════════════════ CTA ═══════════════════ */
+        .cta { text-align: center; padding: 160px 48px; position: relative; z-index: 1; }
+        .cta::before { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 800px; height: 500px; background: radial-gradient(ellipse, rgba(99,102,241,0.08), transparent 70%); pointer-events: none; }
+        .cta-t { font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; letter-spacing: -1.5px; margin-bottom: 20px; line-height: 1.2; position: relative; }
+        .cta-t em { font-family: 'Playfair Display', serif; font-style: italic; font-weight: 400; background: linear-gradient(135deg, #c4b5fd, #22d3ee); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .cta-d { font-size: 17px; color: rgba(255,255,255,0.4); max-width: 500px; margin: 0 auto 44px; line-height: 1.75; position: relative; }
+        .cta-btns { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; position: relative; }
+
+        /* ═══════════════════ FOOTER ═══════════════════ */
+        footer { text-align: center; padding: 48px 48px 40px; border-top: 1px solid rgba(255,255,255,0.04); position: relative; z-index: 1; }
+        footer .fb { font-size: 15px; font-weight: 700; margin-bottom: 6px; color: rgba(255,255,255,0.6); }
+        footer p { color: rgba(255,255,255,0.25); font-size: 12px; line-height: 2; }
+        .fl { display: flex; justify-content: center; gap: 28px; margin-top: 20px; }
+        .fl a { color: rgba(255,255,255,0.3); text-decoration: none; font-size: 12px; font-weight: 500; transition: color 0.2s; }
+        .fl a:hover { color: white; }
+
+        /* ═══════════════════ RESPONSIVE ═══════════════════ */
+        @media (max-width: 1024px) {
+            .sg, .wg, .tg, .eg { grid-template-columns: repeat(2, 1fr); }
+            .pipeline { grid-template-columns: repeat(4, 1fr); }
+        }
+        @media (max-width: 768px) {
+            nav, .hero, section, .cta, footer, .terminal-section { padding-left: 20px; padding-right: 20px; }
+            nav { padding: 12px 20px; }
+            .sg, .wg, .tg, .eg { grid-template-columns: 1fr; }
+            .pipeline { grid-template-columns: repeat(2, 1fr); }
+            .nav-links { display: none; }
+            .hero-vid { width: 100%; opacity: 0.2; mask-image: none; -webkit-mask-image: none; }
+            .hero h1 { font-size: 2.4rem; }
+        }
+
+        /* ═══════════════════ SCROLL REVEAL ═══════════════════ */
+        .rv { opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+        .rv.vis { opacity: 1; transform: translateY(0); }
+        .rv-d1 { transition-delay: 0.1s; }
+        .rv-d2 { transition-delay: 0.2s; }
+        .rv-d3 { transition-delay: 0.3s; }
+
+        /* ═══════════════════ GLOW LINE ═══════════════════ */
+        .glow-line { height: 1px; background: linear-gradient(90deg, transparent, rgba(139,92,246,0.15), rgba(99,102,241,0.2), rgba(139,92,246,0.15), transparent); position: relative; z-index: 1; }
+        .glow-line::after { content: ''; position: absolute; top: -20px; left: 0; right: 0; bottom: -20px; background: linear-gradient(90deg, transparent, rgba(139,92,246,0.03), transparent); }
+
+        /* ═══════════════════ COUNTER ANIMATION ═══════════════════ */
+        .counter { display: inline-block; }
+
+        /* ═══════════════════ CURSOR GLOW ═══════════════════ */
+        .cursor-glow { position: fixed; width: 400px; height: 400px; border-radius: 50%; background: radial-gradient(circle, rgba(139,92,246,0.06), transparent 60%); pointer-events: none; z-index: 0; transform: translate(-50%, -50%); transition: opacity 0.3s; }
+    </style>
+</head>
+<body>
+
+<!-- CURSOR GLOW -->
+<div class="cursor-glow" id="cursorGlow"></div>
+
+<!-- PARTICLES -->
+<canvas id="particles"></canvas>
+
+<!-- AURORA -->
+<div class="aurora">
+    <div class="aurora-blob ab1"></div>
+    <div class="aurora-blob ab2"></div>
+    <div class="aurora-blob ab3"></div>
+</div>
+
+<!-- NAV -->
+<nav id="nav">
+    <div class="logo">
+        <div class="logo-icon">D</div>
+        DOF <span>#1686</span>
+    </div>
+    <div class="nav-r">
+        <div class="nav-links">
+            <a href="#why">Why DOF</a>
+            <a href="#pipeline">Pipeline</a>
+            <a href="#tracks">Tracks</a>
+            <a href="#evidence">Proof</a>
+        </div>
+        <div class="chip">
+            <div class="dot"></div>
+            <span>Agent Live</span>
+            <span style="opacity:0.2">|</span>
+            <span>Base + Avalanche</span>
+        </div>
+    </div>
+</nav>
+
+<!-- ═══════════════════ HERO ═══════════════════ -->
+<div class="hero">
+    <div class="hero-vid">
+        <video autoplay loop muted playsinline id="hero-video"></video>
+    </div>
+    <div class="hero-c">
+        <div class="h-badge">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+            ERC-8004 Certified &middot; DOF Agent #1686
+        </div>
+        <h1>
+            <span class="word" style="animation-delay:0s">The</span>
+            <span class="word" style="animation-delay:.06s">AI</span>
+            <span class="word" style="animation-delay:.12s">Agent</span>
+            <span class="word" style="animation-delay:.18s">You</span>
+            <span class="word" style="animation-delay:.24s">Can</span><br>
+            <span class="word" style="animation-delay:.3s">Actually</span>&nbsp;
+            <em><span class="word" style="animation-delay:.38s">Verify.</span></em>
+        </h1>
+        <p class="hsub">Every action governed by deterministic rules. Every proof verified by Z3. Every result recorded on-chain. Zero trust required.</p>
+        <div class="hero-btns">
+            <a href="#tracks" class="bw">Explore Tracks <span>&rarr;</span></a>
+            <a href="https://snowtrace.io/address/0x154a3F49a9d28FeCC1f6Db7573303F4D809A26F6" target="_blank" class="bo">Verify On-Chain</a>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════════ MARQUEE ═══════════════════ -->
+<div class="marquee-wrap">
+    <div class="marquee" id="marquee">
+        <div class="marquee-item"><span class="mi-dot"></span> 238+ Autonomous Cycles</div>
+        <div class="marquee-item"><span class="mi-dot"></span> 48+ On-Chain Attestations</div>
+        <div class="marquee-item"><span class="mi-dot"></span> 4/4 Z3 Proofs Verified</div>
+        <div class="marquee-item"><span class="mi-dot"></span> Zero LLM in Governance</div>
+        <div class="marquee-item"><span class="mi-dot"></span> ERC-8004 Certified</div>
+        <div class="marquee-item"><span class="mi-dot"></span> 986 Tests Passing</div>
+        <div class="marquee-item"><span class="mi-dot"></span> 70+ Core Modules</div>
+        <div class="marquee-item"><span class="mi-dot"></span> Avalanche + Base</div>
+        <!-- Duplicate for seamless loop -->
+        <div class="marquee-item"><span class="mi-dot"></span> 238+ Autonomous Cycles</div>
+        <div class="marquee-item"><span class="mi-dot"></span> 48+ On-Chain Attestations</div>
+        <div class="marquee-item"><span class="mi-dot"></span> 4/4 Z3 Proofs Verified</div>
+        <div class="marquee-item"><span class="mi-dot"></span> Zero LLM in Governance</div>
+        <div class="marquee-item"><span class="mi-dot"></span> ERC-8004 Certified</div>
+        <div class="marquee-item"><span class="mi-dot"></span> 986 Tests Passing</div>
+        <div class="marquee-item"><span class="mi-dot"></span> 70+ Core Modules</div>
+        <div class="marquee-item"><span class="mi-dot"></span> Avalanche + Base</div>
+    </div>
+</div>
+
+<!-- ═══════════════════ STATS ═══════════════════ -->
+<section>
+    <div class="sl rv">By The Numbers</div>
+    <div class="st rv">Not promises. <em>Proof.</em></div>
+    <div class="sd rv">Every number below is verifiable on-chain, in our test suite, or through formal mathematical proofs.</div>
+    <div class="sg rv">
+        <div class="sc"><div class="sv"><span class="counter" data-target="238">0</span>+</div><div class="sla">Autonomous Cycles</div></div>
+        <div class="sc"><div class="sv"><span class="counter" data-target="48">0</span>+</div><div class="sla">On-Chain Attestations</div></div>
+        <div class="sc"><div class="sv">4/4</div><div class="sla">Z3 Proofs Verified</div></div>
+        <div class="sc"><div class="sv"><span class="counter" data-target="986">0</span></div><div class="sla">Tests Passing</div></div>
+        <div class="sc"><div class="sv">0%</div><div class="sla">LLM in Governance</div></div>
+        <div class="sc"><div class="sv">24/7</div><div class="sla">Always-On Agent</div></div>
+    </div>
+</section>
+
+<div class="glow-line"></div>
+
+<!-- ═══════════════════ WHY DOF ═══════════════════ -->
+<section id="why">
+    <div class="sl rv">Why DOF</div>
+    <div class="st rv">AI agents are black boxes.<br>We made them <em>transparent.</em></div>
+    <div class="sd rv">Other agents promise they'll behave. DOF agents prove it with math and record the proof on-chain. Forever.</div>
+    <div class="wg">
+        <div class="wc rv">
+            <div class="wc-icon">&#128274;</div>
+            <div class="wc-t">Zero-Trust Governance</div>
+            <div class="wc-d">No LLM in the governance loop. Every rule is deterministic code. If it violates the constitution, it gets blocked. No exceptions.</div>
+        </div>
+        <div class="wc rv rv-d1">
+            <div class="wc-icon">&#9878;</div>
+            <div class="wc-t">Formal Verification</div>
+            <div class="wc-d">Z3 theorem prover generates mathematical proofs for every invariant. Not assertions. Not unit tests. Actual mathematical proofs.</div>
+        </div>
+        <div class="wc rv rv-d2">
+            <div class="wc-icon">&#9939;</div>
+            <div class="wc-t">On-Chain Receipts</div>
+            <div class="wc-d">Every agent action produces a keccak256 hash published to Avalanche and Base. Permanently auditable by anyone, anywhere.</div>
+        </div>
+        <div class="wc rv">
+            <div class="wc-icon">&#9889;</div>
+            <div class="wc-t">Multi-Provider Resilience</div>
+            <div class="wc-d">Cerebras, Groq, Mistral, SambaNova — 5+ LLM providers. If one fails, the next takes over in milliseconds. Zero downtime.</div>
+        </div>
+        <div class="wc rv rv-d1">
+            <div class="wc-icon">&#128640;</div>
+            <div class="wc-t">Fully Autonomous</div>
+            <div class="wc-d">238+ cycles executed with zero human input. Discovers tasks, executes, verifies, commits, and attests on-chain. Continuously.</div>
+        </div>
+        <div class="wc rv rv-d2">
+            <div class="wc-icon">&#128737;</div>
+            <div class="wc-t">Self-Supervising</div>
+            <div class="wc-d">MetaSupervisor scores every output: Quality, Accuracy, Completeness, Format. Below threshold? Automatic retry or escalation.</div>
+        </div>
+    </div>
+</section>
+
+<div class="glow-line"></div>
+
+<!-- ═══════════════════ PIPELINE ═══════════════════ -->
+<section id="pipeline">
+    <div class="sl rv">The Pipeline</div>
+    <div class="st rv">7 steps. Zero shortcuts.<br>Every action is <em>accountable.</em></div>
+    <div class="sd rv">From identity verification to on-chain recording. No step is optional. No step uses LLM for governance decisions.</div>
+    <div class="pipeline rv">
+        <div class="pipe-step">
+            <div class="pipe-num">Step 01</div>
+            <div class="pipe-icon">&#128272;</div>
+            <div class="pipe-title">Identity</div>
+            <div class="pipe-desc">ERC-8004 #31013</div>
+            <div class="pipe-connector"></div>
+        </div>
+        <div class="pipe-step">
+            <div class="pipe-num">Step 02</div>
+            <div class="pipe-icon">&#128269;</div>
+            <div class="pipe-title">Task</div>
+            <div class="pipe-desc">Auto-Discovery</div>
+            <div class="pipe-connector"></div>
+        </div>
+        <div class="pipe-step">
+            <div class="pipe-num">Step 03</div>
+            <div class="pipe-icon">&#129504;</div>
+            <div class="pipe-title">LLM</div>
+            <div class="pipe-desc">5-Provider Chain</div>
+            <div class="pipe-connector"></div>
+        </div>
+        <div class="pipe-step">
+            <div class="pipe-num">Step 04</div>
+            <div class="pipe-icon">&#9878;</div>
+            <div class="pipe-title">Governance</div>
+            <div class="pipe-desc">Zero LLM</div>
+            <div class="pipe-connector"></div>
+        </div>
+        <div class="pipe-step">
+            <div class="pipe-num">Step 05</div>
+            <div class="pipe-icon">&#128200;</div>
+            <div class="pipe-title">Z3 Proof</div>
+            <div class="pipe-desc">Math Verified</div>
+            <div class="pipe-connector"></div>
+        </div>
+        <div class="pipe-step">
+            <div class="pipe-num">Step 06</div>
+            <div class="pipe-icon">&#9939;</div>
+            <div class="pipe-title">On-Chain</div>
+            <div class="pipe-desc">Avalanche + Base</div>
+            <div class="pipe-connector"></div>
+        </div>
+        <div class="pipe-step">
+            <div class="pipe-num">Step 07</div>
+            <div class="pipe-icon">&#128737;</div>
+            <div class="pipe-title">Supervisor</div>
+            <div class="pipe-desc">Accept / Retry</div>
+        </div>
+    </div>
+</section>
+
+<div class="glow-line"></div>
+
+<!-- ═══════════════════ TRACKS ═══════════════════ -->
+<section id="tracks">
+    <div class="sl rv">Live Tracks</div>
+    <div class="st rv">10 working tracks. Not mockups.<br>Not slideshows. <em>Software.</em></div>
+    <div class="sd rv">Each track is a fully functional application powered by the DOF governance pipeline.</div>
+    <div class="tg">
+        <a href="/metamask-delegation/" class="tc rv">
+            <div class="tc-h"><div class="tc-ic" style="background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.15)">&#129418;</div><span class="tc-partner">MetaMask</span></div>
+            <div class="tc-n">Delegations</div>
+            <div class="tc-d">Map and verify token delegation dynamically through our agent verification layer on Base.</div>
+            <div class="tc-f"><span class="tc-cycle">CYCLE #238</span><div class="tc-arrow">&nearr;</div></div>
+        </a>
+        <a href="/octant-analysis/" class="tc rv rv-d1">
+            <div class="tc-h"><div class="tc-ic" style="background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.15)">&#9632;</div><span class="tc-partner">Octant</span></div>
+            <div class="tc-n">On-Chain Analytics</div>
+            <div class="tc-d">Real-time ecosystem metrics, TVL tracking and delegate stats fetched directly from chain data.</div>
+            <div class="tc-f"><span class="tc-cycle">CYCLE #238</span><div class="tc-arrow">&nearr;</div></div>
+        </a>
+        <a href="/olas-pearl/" class="tc rv rv-d2">
+            <div class="tc-h"><div class="tc-ic" style="background:rgba(167,139,250,0.1);border:1px solid rgba(167,139,250,0.15)">&#9899;</div><span class="tc-partner">Olas Pearl</span></div>
+            <div class="tc-n">Agent Integration</div>
+            <div class="tc-d">Deploy and coordinate specialized trading and analytic agents into the Olas network.</div>
+            <div class="tc-f"><span class="tc-cycle">CYCLE #238</span><div class="tc-arrow">&nearr;</div></div>
+        </a>
+        <a href="/locus-payments/" class="tc rv">
+            <div class="tc-h"><div class="tc-ic" style="background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.15)">&#9673;</div><span class="tc-partner">Locus</span></div>
+            <div class="tc-n">x402 Payments</div>
+            <div class="tc-d">Execute high-speed automated machine-to-machine payments with cross-chain settlement.</div>
+            <div class="tc-f"><span class="tc-cycle">CYCLE #238</span><div class="tc-arrow">&nearr;</div></div>
+        </a>
+        <a href="/superrare-art/" class="tc rv rv-d1">
+            <div class="tc-h"><div class="tc-ic" style="background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.15)">&#9726;</div><span class="tc-partner">SuperRare</span></div>
+            <div class="tc-n">Generative Art</div>
+            <div class="tc-d">AI-powered deterministic SVG art generation and direct NFT minting via connected wallet.</div>
+            <div class="tc-f"><span class="tc-cycle">CYCLE #238</span><div class="tc-arrow">&nearr;</div></div>
+        </a>
+        <a href="/arkhai-escrow/" class="tc rv rv-d2">
+            <div class="tc-h"><div class="tc-ic" style="background:rgba(232,121,249,0.1);border:1px solid rgba(232,121,249,0.15)">&#9670;</div><span class="tc-partner">Arkhai</span></div>
+            <div class="tc-n">Secure Escrow</div>
+            <div class="tc-d">Decentralized funds holding with natural language agreements and cryptographic dispute resolution.</div>
+            <div class="tc-f"><span class="tc-cycle">CYCLE #238</span><div class="tc-arrow">&nearr;</div></div>
+        </a>
+        <a href="/private-agents/" class="tc rv">
+            <div class="tc-h"><div class="tc-ic" style="background:rgba(110,86,207,0.1);border:1px solid rgba(110,86,207,0.15)">&#128274;</div><span class="tc-partner">Nillion</span></div>
+            <div class="tc-n">Private Agents</div>
+            <div class="tc-d">Secure multi-party computation for AI agents. Data remains encrypted even during processing via blind MPC.</div>
+            <div class="tc-f"><span class="tc-cycle">CYCLE #238</span><div class="tc-arrow">&nearr;</div></div>
+        </a>
+        <a href="/agent-services-base/" class="tc rv rv-d1">
+            <div class="tc-h"><div class="tc-ic" style="background:rgba(0,82,255,0.1);border:1px solid rgba(0,82,255,0.15)">&#9898;</div><span class="tc-partner">Coinbase</span></div>
+            <div class="tc-n">Agent Services on Base</div>
+            <div class="tc-d">Deploy autonomous agent services on Base L2 with native ERC-8004 identity and sub-cent transactions.</div>
+            <div class="tc-f"><span class="tc-cycle">CYCLE #238</span><div class="tc-arrow">&nearr;</div></div>
+        </a>
+        <a href="/best-agent-celo/" class="tc rv rv-d2">
+            <div class="tc-h"><div class="tc-ic" style="background:rgba(252,255,82,0.1);border:1px solid rgba(252,255,82,0.15)">&#9673;</div><span class="tc-partner">Celo</span></div>
+            <div class="tc-n">Best Agent on Celo</div>
+            <div class="tc-d">Mobile-first agent governance with stablecoin payments and cross-chain attestation bridging.</div>
+            <div class="tc-f"><span class="tc-cycle">CYCLE #238</span><div class="tc-arrow">&nearr;</div></div>
+        </a>
+        <a href="/erc-8183/" class="tc rv">
+            <div class="tc-h"><div class="tc-ic" style="background:rgba(168,85,247,0.1);border:1px solid rgba(168,85,247,0.15)">&#128220;</div><span class="tc-partner">ERC Standard</span></div>
+            <div class="tc-n">ERC-8183 Context</div>
+            <div class="tc-d">Standardized on-chain agent context protocol for verifiable inter-agent communication.</div>
+            <div class="tc-f"><span class="tc-cycle">CYCLE #238</span><div class="tc-arrow">&nearr;</div></div>
+        </a>
+    </div>
+</section>
+
+<div class="glow-line"></div>
+
+<!-- ═══════════════════ EVIDENCE ═══════════════════ -->
+<section id="evidence">
+    <div class="sl rv">Verify Everything</div>
+    <div class="st rv">Don't trust us. <em>Verify.</em></div>
+    <div class="sd rv">Every claim has a corresponding on-chain record or verifiable artifact. Click the links below.</div>
+    <div class="eg rv">
+        <div class="ec">
+            <h3>ERC-8004 Identity</h3>
+            <code>Token #31013<br>Base Mainnet<br>0xa2ad...A3E9</code>
+            <br><a href="https://basescan.org/tx/0x7362ef41605e430aba3998b0888e7886c04d65673ce89aa12e1abdf7cffcada4" target="_blank">View on Basescan &rarr;</a>
+        </div>
+        <div class="ec">
+            <h3>Proof Registry</h3>
+            <code>DOFProofRegistry.sol<br>0x154a3F49a9d28FeCC1f6Db<br>7573303F4D809A26F6</code>
+            <br><a href="https://snowtrace.io/address/0x154a3F49a9d28FeCC1f6Db7573303F4D809A26F6" target="_blank">View on Snowtrace &rarr;</a>
+        </div>
+        <div class="ec">
+            <h3>Source Code</h3>
+            <code>70+ modules &middot; 27K+ LOC<br>Open source &middot; Apache 2.0<br>986 tests passing</code>
+            <br><a href="https://github.com/Cyberpaisa/deterministic-observability-framework/tree/hackathon" target="_blank">View on GitHub &rarr;</a>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════ LIVE TERMINAL ═══════════════════ -->
+<div class="terminal-section rv">
+    <div class="terminal-box">
+        <div class="terminal-header">
+            <div class="terminal-dot td-r"></div>
+            <div class="terminal-dot td-y"></div>
+            <div class="terminal-dot td-g"></div>
+            <span class="terminal-title">DOF Agent #1686 — Live Feed</span>
+        </div>
+        <div class="terminal-body" id="terminal">
+            <div><span class="prompt">$</span> Initializing DOF Agent #1686...</div>
+            <div><span class="info">[GOVERNANCE]</span> Constitution loaded — 42 deterministic rules active</div>
+            <div><span class="info">[Z3]</span> Verifying GCR_INVARIANT... <span class="success">PROVEN (12ms)</span></div>
+            <div><span class="info">[Z3]</span> Verifying SS_FORMULA... <span class="success">PROVEN (8ms)</span></div>
+            <div><span class="info">[Z3]</span> Verifying SS_MONOTONICITY... <span class="success">PROVEN (15ms)</span></div>
+            <div><span class="info">[Z3]</span> Verifying SS_BOUNDARIES... <span class="success">PROVEN (9ms)</span></div>
+            <div><span class="info">[CHAIN]</span> Connected to Avalanche C-Chain — Block #78,234,891</div>
+            <div><span class="success">[READY]</span> Agent operational — Cycle #238 complete</div>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════════ CTA ═══════════════════ -->
+<div class="cta">
+    <div class="cta-t rv">The agent acted autonomously.<br><em>Math proved it.</em> Blockchain recorded it.</div>
+    <div class="cta-d rv">DOF is the framework that makes AI agents accountable. Not with promises — with proofs.</div>
+    <div class="cta-btns rv">
+        <a href="https://github.com/Cyberpaisa/deterministic-observability-framework/tree/hackathon" target="_blank" class="bw">View Source Code &rarr;</a>
+        <a href="https://snowtrace.io/address/0x154a3F49a9d28FeCC1f6Db7573303F4D809A26F6" target="_blank" class="bo">Verify On-Chain</a>
+    </div>
+</div>
+
+<!-- ═══════════════════ FOOTER ═══════════════════ -->
+<footer>
+    <div class="fb">DOF Agent #1686 &mdash; Synthesis Hackathon 2026</div>
+    <p>Deterministic Observability Framework</p>
+    <p>Apache 2.0 &middot; ERC-8004 &middot; Avalanche &middot; Base</p>
+    <p style="margin-top:20px;font-size:13px;color:rgba(255,255,255,0.5);font-weight:600;letter-spacing:0.5px;">by <span style="color:rgba(255,255,255,0.8);">Cyber Paisa</span></p>
+    <div class="fl">
+        <a href="https://github.com/Cyberpaisa/deterministic-observability-framework/tree/hackathon" target="_blank">GitHub</a>
+        <a href="https://basescan.org/tx/0x7362ef41605e430aba3998b0888e7886c04d65673ce89aa12e1abdf7cffcada4" target="_blank">Basescan</a>
+        <a href="https://snowtrace.io/address/0x154a3F49a9d28FeCC1f6Db7573303F4D809A26F6" target="_blank">Snowtrace</a>
+    </div>
+</footer>
+
+<script>
+// ═══════════════════ HLS VIDEO ═══════════════════
+!function(){
+    const v=document.getElementById('hero-video');
+    const s='https://stream.mux.com/s8pMcOvMQXc4GD6AX4e1o01xFogFxipmuKltNfSYza0200.m3u8';
+    if(v.canPlayType('application/vnd.apple.mpegurl')) v.src=s;
+    else{const t=document.createElement('script');t.src='https://cdn.jsdelivr.net/npm/hls.js@latest';t.onload=function(){if(Hls.isSupported()){const h=new Hls;h.loadSource(s);h.attachMedia(v)}};document.head.appendChild(t)}
+}();
+
+// ═══════════════════ PARTICLES ═══════════════════
+!function(){
+    const c=document.getElementById('particles'),ctx=c.getContext('2d');
+    let w,h,particles=[];
+    function resize(){w=c.width=window.innerWidth;h=c.height=window.innerHeight}
+    resize(); window.addEventListener('resize',resize);
+    for(let i=0;i<80;i++) particles.push({
+        x:Math.random()*w, y:Math.random()*h,
+        vx:(Math.random()-0.5)*0.3, vy:(Math.random()-0.5)*0.3,
+        r:Math.random()*1.5+0.3, a:Math.random()*0.3+0.05
+    });
+    function draw(){
+        ctx.clearRect(0,0,w,h);
+        particles.forEach(p=>{
+            p.x+=p.vx; p.y+=p.vy;
+            if(p.x<0)p.x=w; if(p.x>w)p.x=0;
+            if(p.y<0)p.y=h; if(p.y>h)p.y=0;
+            ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+            ctx.fillStyle=`rgba(167,139,250,${p.a})`;ctx.fill();
+        });
+        // draw connections
+        for(let i=0;i<particles.length;i++){
+            for(let j=i+1;j<particles.length;j++){
+                const dx=particles[i].x-particles[j].x,dy=particles[i].y-particles[j].y;
+                const d=Math.sqrt(dx*dx+dy*dy);
+                if(d<120){
+                    ctx.beginPath();ctx.moveTo(particles[i].x,particles[i].y);
+                    ctx.lineTo(particles[j].x,particles[j].y);
+                    ctx.strokeStyle=`rgba(139,92,246,${0.06*(1-d/120)})`;
+                    ctx.lineWidth=0.5;ctx.stroke();
+                }
+            }
+        }
+        requestAnimationFrame(draw);
+    }
+    draw();
+}();
+
+// ═══════════════════ CURSOR GLOW ═══════════════════
+document.addEventListener('mousemove',e=>{
+    const g=document.getElementById('cursorGlow');
+    g.style.left=e.clientX+'px'; g.style.top=e.clientY+'px';
+});
+
+// ═══════════════════ NAV SCROLL ═══════════════════
+window.addEventListener('scroll',()=>{
+    document.getElementById('nav').classList.toggle('scrolled',window.scrollY>50);
+});
+
+// ═══════════════════ SCROLL REVEAL ═══════════════════
+const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('vis');obs.unobserve(e.target)}});
+},{threshold:0.06});
+document.querySelectorAll('.rv').forEach(e=>obs.observe(e));
+
+// ═══════════════════ COUNTER ANIMATION ═══════════════════
+const counterObs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+        if(e.isIntersecting){
+            const el=e.target, target=parseInt(el.dataset.target);
+            let current=0;
+            const step=Math.max(1,Math.floor(target/60));
+            const timer=setInterval(()=>{
+                current+=step;
+                if(current>=target){current=target;clearInterval(timer)}
+                el.textContent=current.toLocaleString();
+            },20);
+            counterObs.unobserve(el);
+        }
+    });
+},{threshold:0.5});
+document.querySelectorAll('.counter').forEach(e=>counterObs.observe(e));
+
+// ═══════════════════ LIVE TERMINAL ═══════════════════
+!function(){
+    const t=document.getElementById('terminal');
+    let cycle=238;
+    const actions=[
+        ['CHAIN','Publishing proof hash to Avalanche...','TX confirmed in 2.1s'],
+        ['GOVERNANCE','Checking output against constitution...','42/42 rules passed'],
+        ['Z3','Running formal verification...','4/4 PROVEN (44ms)'],
+        ['SUPERVISOR','Evaluating output quality...','Score: 0.89 → ACCEPT'],
+        ['PROVIDER','LiteLLM routing via Cerebras...','Response in 340ms'],
+        ['MEMORY','Indexing step in ChromaDB...','Embedding stored'],
+        ['AUDIT','Generating keccak256 hash...','0x8f3a...published'],
+        ['CHAIN','Syncing with Base Mainnet...','Block #24,891,023'],
+    ];
+    setInterval(()=>{
+        cycle++;
+        const a=actions[Math.floor(Math.random()*actions.length)];
+        const d=document.createElement('div');
+        d.innerHTML=`<span class="info">[${a[0]}]</span> ${a[1]} <span class="success">${a[2]}</span>`;
+        t.appendChild(d);
+        t.scrollTop=t.scrollHeight;
+        if(t.children.length>20)t.removeChild(t.children[0]);
+    },4000);
+}();
+</script>
+</body>
+</html>
