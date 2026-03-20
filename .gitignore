@@ -1,4 +1,26 @@
+# Vercel
 .vercel
+
+# Dependencies
 node_modules
+
+# Environment
 .env
+.env.*
+
+# Backups
 *.backup*
+*.bak*
+*.respaldo*
+backup-*.html
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Legacy / dev-only
+tailwind.config.js
+v1_html_version/
+api/
+index-dof-v2.html
+index.html.simple.backup

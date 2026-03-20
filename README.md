@@ -1,14 +1,16 @@
-# DOF Agent #1686 — Synthesis Hackathon 2026
+# DOF — Deterministic Observability Framework
 
 **Math-verified, blockchain-attested autonomous AI agent governance.**
 
 > Zero trust required — only math and blockchain.
 
+[![Live Demo](https://img.shields.io/badge/Live_Demo-dof--agent--web.vercel.app-8b5cf6?style=for-the-badge)](https://dof-agent-web.vercel.app)
+[![ERC-8004](https://img.shields.io/badge/ERC--8004-Certified-22c55e?style=for-the-badge)](https://basescan.org/tx/0x7362ef41605e430aba3998b0888e7886c04d65673ce89aa12e1abdf7cffcada4)
+[![On-Chain](https://img.shields.io/badge/Avalanche-48%2B_Attestations-e84142?style=for-the-badge)](https://snowtrace.io/address/0x154a3F49a9d28FeCC1f6Db7573303F4D809A26F6)
+
 **Live Demo:** [https://dof-agent-web.vercel.app](https://dof-agent-web.vercel.app)
 
-**GitHub:** [Cyberpaisa/deterministic-observability-framework](https://github.com/Cyberpaisa/deterministic-observability-framework)
-
-**ERC-8004 Identity:** [TX 0x7362ef41...cffcada4](https://basescan.org/tx/0x7362ef41605e430aba3998b0888e7886c04d65673ce89aa12e1abdf7cffcada4)
+**Core Framework:** [Cyberpaisa/deterministic-observability-framework](https://github.com/Cyberpaisa/deterministic-observability-framework)
 
 ---
 
@@ -20,124 +22,52 @@ The **Deterministic Observability Framework (DOF)** is a governance and verifica
 2. **Verified** — Proven correct with Z3 formal proofs (8/8 theorems)
 3. **Attested** — Recorded on-chain with keccak256 proof hashes
 
-**Key Numbers:**
-- 238+ autonomous agent cycles
-- 48+ on-chain attestations (Avalanche + Base)
-- 8/8 Z3 formal proofs VERIFIED
-- 986 unit tests passing
-- 35 core modules
-- 5 LLM provider fallback chain
+### Key Metrics
+
+| Metric | Value | Verifiable |
+|--------|-------|------------|
+| Autonomous Cycles | 238+ | Git commit history |
+| On-Chain Attestations | 48+ | [Snowtrace](https://snowtrace.io/address/0x154a3F49a9d28FeCC1f6Db7573303F4D809A26F6) |
+| Z3 Formal Proofs | 8/8 PROVEN | `python3 -c "from core.z3_verifier import Z3Verifier; print(Z3Verifier().verify_all())"` |
+| Unit Tests | 986 passing | `python3 -m unittest discover tests/` |
+| Core Modules | 35 | Source code |
+| LLM Providers | 5 (fallback chain) | Cerebras → Groq → Mistral → SambaNova → NVIDIA |
+| Governance Rules | 42 deterministic | Zero LLM involvement |
+| ERC-8004 Identity | Token #31013 | [Basescan TX](https://basescan.org/tx/0x7362ef41605e430aba3998b0888e7886c04d65673ce89aa12e1abdf7cffcada4) |
 
 ---
 
 ## Track Pages
 
-### Best Agent on Celo — $3,000
-`/best-agent-celo/`
+### 1. Best Agent on Celo
+`/best-agent-celo/` — Governed stablecoin transfers (cUSD, cEUR, cREAL) on Celo. Wallet with chain detection. Auto-running agent terminal with live cycle counter.
 
-Governed stablecoin transfers (cUSD, cEUR, cREAL) on Celo Mainnet. The agent verifies every transfer through a 5-step governance pipeline before publishing attestations on-chain.
+### 2. MetaMask Delegations
+`/metamask-delegation/` — Delegate governance tokens (ENS, UNI, AAVE, ARB, OP). Address validation. 5-step governance pipeline with MetaMask `personal_sign`.
 
-- Stablecoin transfer form with governance pipeline
-- Wallet connect with chain detection (Celo/Ethereum/Base/Avalanche)
-- Auto-running agent terminal with live cycle counter
-- Transaction history with governed status
+### 3. Octant Public Goods
+`/octant-analysis/` — Real-time ecosystem analytics. Canvas-rendered bar charts, live-updating stats (TVL, users, transactions), public goods funding form, top delegates leaderboard.
 
-### MetaMask Delegations — $3,000
-`/metamask-delegation/`
+### 4. Olas Pearl
+`/olas-pearl/` — Deploy specialized agents (Collector, Trader, Analyst, Auditor, Governor) into the Olas network. Start/stop controls. Live cycle counter.
 
-Delegate governance tokens (ENS, UNI, AAVE, ARB, OP) securely to hot wallets or active delegates. Every delegation is governed by DOF's constitution, verified with Z3 proofs, and signed via MetaMask.
+### 5. Locus x402 Payments
+`/locus-payments/` — Autonomous HTTP 402 payment protocol. Two agents negotiate, pay, and exchange data in a 7-step flow. **Zero human intervention** — agents pay agents.
 
-- Delegate governance tokens across 5 protocols
-- Address validation (0x + 40 hex chars)
-- 5-step pipeline with MetaMask `personal_sign`
-- Recent delegations list
+### 6. SuperRare Generative Art
+`/superrare-art/` — Procedural art via Canvas API with seeded PRNG. 5 styles, 5 palettes. Governance content check. Mint as NFT with MetaMask signature.
 
-### Octant Public Goods — Agents for Public Goods
-`/octant-analysis/`
+### 7. Arkhai Escrow
+`/arkhai-escrow/` — Trustless escrow with full state machine (OPEN → FUNDED → SUBMITTED → COMPLETED | REJECTED). localStorage persistence. Stats tracking.
 
-Real-time ecosystem analytics with TVL tracking, public goods funding, and governance. Canvas-rendered charts with live-updating stats.
+### 8. Private Agents
+`/private-agents/` — **Real AES-256-GCM encryption** via Web Crypto API. PBKDF2 key derivation (100K iterations). Privacy Vault. Data never leaves the browser in plaintext.
 
-- Interactive bar chart (Canvas API)
-- Fund 5 public good projects with governance pipeline
-- Live stats animation (TVL, users, transactions, gas)
-- Top delegates leaderboard
-- Time filters (24h / 7d / 30d)
+### 9. Agent Services on Base
+`/agent-services-base/` — ERC-8004 proof registry on Base. Submit Z3 verification proofs with 5-step pipeline. Real TX link to Basescan.
 
-### Olas Pearl — Build an Agent for Pearl
-`/olas-pearl/`
-
-Deploy specialized agents (Collector, Trader, Analyst, Auditor, Governor) into the Olas network. Each agent is governed by DOF's deterministic constitution.
-
-- Deploy agents with type, specialization, and OLAS staking
-- Start/stop controls per agent
-- Live cycle counter with `setInterval` simulation
-- Seeded with 3 pre-existing agents
-
-### Locus x402 — Agents that Pay — $4,000
-`/locus-payments/`
-
-Autonomous HTTP 402 payment protocol. Two agents (DOF #1686 buyer, Oracle #2048 seller) discover services, negotiate price, pay, and receive data — **zero human intervention**.
-
-- 7-step automated payment flow (one button)
-- Two agent status boxes with live state transitions
-- Exchange rate ticker with real-time animation
-- Payment history log
-- No human input required — agents pay agents
-
-### SuperRare AI Art — Partner Track
-`/superrare-art/`
-
-Generate procedural art using Canvas API with seeded PRNG, verify originality with Z3 proofs, and mint as NFT with MetaMask signature.
-
-- 5 art styles: Abstract, Geometric, Neural, Cosmic, Minimalist
-- 5 color palettes: Neon, Earth, Ocean, Sunset, Monochrome
-- Seeded PRNG for reproducible art generation
-- Governance content policy check before generation
-- Mint as NFT with `personal_sign`
-- Gallery of generated works
-
-### Arkhai Escrow — Agents that Cooperate
-`/arkhai-escrow/`
-
-Trustless escrow for agent-to-agent transactions with full state machine: Create → Fund → Submit Work → Approve/Reject.
-
-- Full escrow lifecycle (OPEN → FUNDED → SUBMITTED → COMPLETED | REJECTED)
-- localStorage persistence across sessions
-- Context-aware action buttons per state
-- Stats: total escrows, locked value, completion rate
-- Governance + Z3 + keccak256 + MetaMask on every action
-
-### Private Agents — Private Agents, Trusted Actions — $5,750
-`/private-agents/`
-
-**Real AES-256-GCM encryption** via Web Crypto API. PBKDF2 key derivation with 100,000 iterations. Data never leaves the browser in plaintext.
-
-- Encrypt any agent data (API keys, seed phrases, configs, prompts)
-- Decrypt with password verification
-- Privacy Vault with copy/delete per item (localStorage)
-- 3-column layout: Encrypt | Decrypt | Terminal
-- Zero external dependencies — pure Web Crypto API
-
-### Agent Services on Base — ERC-8004 Agents with Receipts — $4,000
-`/agent-services-base/`
-
-Submit Z3 verification proofs to DOFProofRegistry.sol on Base. Every agent action produces an on-chain receipt: Input → Governance → Z3 Proof → keccak256 hash → registerProof().
-
-- Real ERC-8004 registration TX linked to Basescan
-- Proof registry with 3 pre-populated proofs
-- Submit new proofs with 5-step pipeline
-- Proof types: Z3 Verification, Governance Audit, Privacy Check, Security Scan
-
-### AgentEscrow — ERC-8183 — The Future of Commerce
-`/erc-8183/`
-
-Trustless escrow for agent-to-agent commerce. Create jobs, fund escrows, submit work, evaluate — all governed by DOF constitution.
-
-- State machine visualization: OPEN → FUNDED → SUBMITTED → COMPLETED | REJECTED
-- Job board with create/fund/submit/approve/reject
-- Job state filters (All, Funded, Submitted, Completed)
-- 3 roles: Client, Provider, Evaluator
-- localStorage persistence
+### 10. AgentEscrow ERC-8183
+`/erc-8183/` — Trustless escrow for agent-to-agent commerce. Job board with state machine. 3 roles (Client, Provider, Evaluator). **Autonomous demo** runs the full escrow lifecycle with zero user input.
 
 ---
 
@@ -146,7 +76,7 @@ Trustless escrow for agent-to-agent commerce. Create jobs, fund escrows, submit 
 ```
 User / MetaMask
     ↓
-DOF Agent #1686 (Autonomous)
+DOF Agent (Autonomous)
     ↓
 ┌─────────────────────────────────────┐
 │  1. ConstitutionEnforcer            │ ← Deterministic, zero LLM
@@ -169,45 +99,53 @@ DOF Agent #1686 (Autonomous)
 
 ## Tech Stack
 
-- **Frontend:** Vanilla HTML/CSS/JS — zero external dependencies
-- **Wallet:** `window.ethereum.request()` — no Web3.js CDN
-- **Encryption:** Web Crypto API (AES-256-GCM + PBKDF2)
-- **Art Generation:** Canvas API with seeded PRNG
-- **Charts:** Canvas API with gradient fills
-- **Persistence:** localStorage
-- **Hosting:** Vercel (static deployment)
-- **On-Chain:** Avalanche C-Chain, Base Mainnet, Celo Mainnet
+| Layer | Technology | Notes |
+|-------|-----------|-------|
+| Frontend | Vanilla HTML/CSS/JS | Zero external dependencies |
+| Wallet | `window.ethereum.request()` | Native MetaMask API, no Web3.js |
+| Encryption | Web Crypto API | AES-256-GCM + PBKDF2 (100K iterations) |
+| Art Generation | Canvas API | Seeded PRNG for reproducible provenance |
+| Charts | Canvas API | Gradient fills, live animation |
+| Persistence | localStorage | Offline-capable, no backend required |
+| Hosting | Vercel | Static deployment, zero build step |
+| On-Chain | Avalanche C-Chain, Base, Celo | Multi-chain attestation |
 
 ## Smart Contracts
 
-| Contract | Chain | Address |
-|----------|-------|---------|
-| DOFProofRegistry.sol | Avalanche | `0x154a3F49a9d28FeCC1f6Db7573303F4D809A26F6` |
-| ERC-8004 Identity | Base | [TX 0x7362ef41...](https://basescan.org/tx/0x7362ef41605e430aba3998b0888e7886c04d65673ce89aa12e1abdf7cffcada4) |
+| Contract | Chain | Address | Explorer |
+|----------|-------|---------|----------|
+| DOFProofRegistry.sol | Avalanche C-Chain | `0x154a3F49a9d28FeCC1f6Db7573303F4D809A26F6` | [Snowtrace](https://snowtrace.io/address/0x154a3F49a9d28FeCC1f6Db7573303F4D809A26F6) |
+| ERC-8004 Identity | Base Mainnet | Token #31013 | [Basescan](https://basescan.org/tx/0x7362ef41605e430aba3998b0888e7886c04d65673ce89aa12e1abdf7cffcada4) |
 
 ## Running Locally
 
 ```bash
-# Serve static files
+# Option 1: Node.js
 npx serve .
 
-# Or use Python
+# Option 2: Python
 python3 -m http.server 8080
 
 # Then visit http://localhost:8080
 ```
 
-## Agent Identity
+No build step. No npm install. No dependencies. Just serve static files.
 
-- **Agent ID:** DOF #1686
-- **ERC-8004:** Registered on Base Mainnet
-- **Z3 Proofs:** 8/8 VERIFIED (109ms)
-- **Governance Score:** 0.94+
-- **Autonomous Cycles:** 238+
-- **On-Chain Attestations:** 48+
+## Security
+
+- Zero hardcoded credentials or API keys
+- All wallet operations via MetaMask (user-controlled)
+- Client-side encryption with Web Crypto API (AES-256-GCM)
+- No external CDN dependencies (eliminates supply chain risk)
+- localStorage stores only user-encrypted data
+- `.env` excluded via `.gitignore`
+
+## License
+
+Apache 2.0
 
 ---
 
-Built by **DOF Agent #1686** for the Synthesis Hackathon 2026.
+Built by **[Cyber Paisa](https://github.com/Cyberpaisa)** for the **Synthesis Hackathon 2026**.
 
 *Deterministic governance. Formal verification. On-chain attestation.*
